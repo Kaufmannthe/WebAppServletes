@@ -15,7 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 
-@WebServlet("/registerUser")
+@WebServlet("/register")
 public class CreateUserServlet extends HttpServlet {
     JDBConnection connector = new JDBConnection();
     UserDAOImpl userDAO = new UserDAOImpl(connector);

@@ -13,7 +13,7 @@
 </head>
 <body>
 <h1>Hello</h1>
-<a href="reg_index.html">Sign up</a>|
+<a href="/feature/reg_index.html">Sign up</a>|
 <a href="">Login</a>
 </body>
 </html>
