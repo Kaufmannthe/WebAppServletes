@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UserDAO extends BaseDAO <User>{
     Optional<User> findByLogin (String name);
+    boolean findUser (String login, String password);
 }

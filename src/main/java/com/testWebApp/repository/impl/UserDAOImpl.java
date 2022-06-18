@@ -17,6 +17,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String FIND_ALL_USERS = "SELECT * FROM users";
     private static final String FIND_BY_LOGIN = "SELECT * FROM users WHERE user_login = ?";
     private static final String DELETE_BY_ID ="DELETE FROM users WHERE id = ?";
+    private static final String FIND_USER = "SELECT * FROM users WHERE user_login = ? AND user_password = ?";
 
     private JDBConnection connector;
     public UserDAOImpl(JDBConnection connector){
@@ -34,14 +35,14 @@ public class UserDAOImpl implements UserDAO {
             while (resultSet.next()) {
                 User person = new User();
                 person.setUserID(resultSet.getInt("id"));
-                person.setUserFullName(resultSet.getString("name"));
-                person.setUserLogin(resultSet.getString("address"));
-                person.setUserAge(resultSet.getInt("age"));
+                person.setUserFullName(resultSet.getString("user_full_name"));
+                person.setUserLogin(resultSet.getString("user_login"));
+                person.setUserAge(resultSet.getInt("user_age"));
                 personList.add(person);
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return personList;
     }
@@ -61,7 +62,7 @@ public class UserDAOImpl implements UserDAO {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return Optional.of(user);
@@ -70,7 +71,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean create(User entity) {
         try(Connection connection = connector.getConnection();
-            PreparedStatement statement = connection.prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement statement = connection.prepareStatement(CREATE_USER)) {
             statement.setString(1,entity.getUserFullName());
             statement.setString(2,entity.getUserLogin());
             statement.setString(3,entity.getUserPassword());
@@ -78,8 +79,8 @@ public class UserDAOImpl implements UserDAO {
 
             return statement.executeUpdate() == 1;
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+            e.printStackTrace();
+        }   return false;
     }
 
     @Override
@@ -93,8 +94,8 @@ public class UserDAOImpl implements UserDAO {
 
             return preparedStatement.executeUpdate() == 1;
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+            e.printStackTrace();
+        }return false;
     }
 
     @Override
@@ -109,8 +110,8 @@ public class UserDAOImpl implements UserDAO {
             return preparedStatement.executeUpdate() == 0;
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+            e.printStackTrace();
+        }return false;
     }
 
     @Override
@@ -128,9 +129,23 @@ public class UserDAOImpl implements UserDAO {
             }
 
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
         return Optional.of(user);
+    }
+
+    @Override
+    public boolean findUser(String login, String password) {
+        try(Connection connection = connector.getConnection();
+        PreparedStatement ps = connection.prepareStatement(FIND_USER)) {
+            ps.setString(1,login);
+            ps.setString(2,password);
+
+            ResultSet resultSet = ps.executeQuery();
+            return resultSet.next();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
