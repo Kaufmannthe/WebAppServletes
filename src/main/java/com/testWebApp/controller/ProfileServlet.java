@@ -11,42 +11,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
+import java.util.Optional;
 
-
-@WebServlet("/register")
-public class CreateUserServlet extends HttpServlet {
+@WebServlet("/profile")
+public class ProfileServlet extends HttpServlet {
     JDBConnection connector = new JDBConnection();
     UserDAOImpl userDAO = new UserDAOImpl(connector);
-
-    public CreateUserServlet() {
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-        resp.setContentType("text/html");
         PrintWriter printWriter = resp.getWriter();
-
+        printWriter.write("<html>");
+        printWriter.write("h1 style='text-align: center'>Welcome to your profile11</h1");
+        printWriter.write("</html>");
         String fullName = req.getParameter("full_name");
         int age = Integer.parseInt(req.getParameter("age"));
         String login = req.getParameter("login");
-        String password = req.getParameter("psw");
         String passwordConfirm = req.getParameter("psw-repeat");
-
-        if (!Objects.equals(password, passwordConfirm)) {
-            resp.sendRedirect("/feature/reg_index.jsp");
-            printWriter.write("Пароли не совпадают. Попробуйте снова.");
-
-            User user = new User(fullName, login, password, age);
-            try {
-
-                userDAO.create(user);
-                resp.sendRedirect("/feature/succes_registration.jsp");
-            } catch (Exception e) {
-                printWriter.write("ERROR");
-            }
-        }
     }
 }

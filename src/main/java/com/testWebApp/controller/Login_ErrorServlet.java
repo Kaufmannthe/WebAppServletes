@@ -9,10 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/login_error")
+public class Login_ErrorServlet extends HttpServlet {
     JDBConnection connection = new JDBConnection();
     UserDAOImpl userDAO = new UserDAOImpl(connection);
 
@@ -20,8 +19,6 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("psw");
-        PrintWriter writer = resp.getWriter();
-
 
         if (userDAO.findUser(login, password)) {
             resp.sendRedirect("/feature/home_page.jsp");
@@ -30,5 +27,4 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect("/feature/login_page_error.jsp");
         }
     }
-
 }

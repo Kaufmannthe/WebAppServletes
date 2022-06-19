@@ -60,4 +60,10 @@ public class User {
         this.userPassword = userPassword;
         this.userAge = userAge;
     }
+
+    public User(String userFullName, String userLogin, int userAge) {
+        this.userFullName = userFullName;
+        this.userLogin = userLogin;
+        this.userAge = userAge;
+    }
 }

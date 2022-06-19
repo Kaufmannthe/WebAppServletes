@@ -12,7 +12,9 @@
 </head>
 <body>
 <h1>Регистрация прошла успешно. Хотите продолжить?</h1>
+<hr>
 <a href="home_page.jsp">Да</a>|
+<hr>
 <a href="helloPage.jsp">Нет</a>
 </body>
 </html>
